@@ -1,0 +1,59 @@
+name: Go GMD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+    
+jobs:
+  # The "setup" workflow
+  Setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.17.0'
+  
+  # The "test" workflow
+  Test:
+    name: test
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    # Run testing on the code
+    - name: Run testing
+      run: go test -v ./...
+      
+  # The "build" workflow
+  Build:
+    name: build
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    # Install all the dependencies
+    - name: Install dependencies
+      run: |
+        go version
+        
+    # Run build of the application
+    - name: Run build
+      run: go build -v ./...
+
+  # The "vet and lint" workflow    
+  Lint:
+    name: lint
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    # Run vet on the code
+    - name: Run vet 
+      run: |
+        go vet ./...
