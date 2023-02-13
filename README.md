@@ -2,6 +2,8 @@
 GMD sounds like CMD. yes, It is.
 IT is a CMD to manage git with interactive CLI
 
+:construction: ```Status:``` **development mode** :construction_worker:
+
 ## feature:
 - Create new branch 
     - ASK for type select from feat/, fix/
